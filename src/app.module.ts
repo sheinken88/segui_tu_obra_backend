@@ -1,13 +1,18 @@
-// app.module.ts
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ProjectsModule } from './projects/projects.module';
+import { StagesModule } from './stages/stages.module';
+import { DocumentsModule } from './documents/documents.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -16,9 +21,14 @@ import { AppService } from './app.service';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // Set to false in production
+      synchronize: true, // Remember: set to false in production
       logging: true,
     }),
+    UsersModule,
+    AuthModule,
+    ProjectsModule,
+    StagesModule,
+    DocumentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
