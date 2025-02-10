@@ -46,7 +46,8 @@ export class StagesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.stagesService.remove(Number(id));
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
+    await this.stagesService.remove(Number(id));
+    return { message: `Stage with ID ${id} deleted successfully` };
   }
 }

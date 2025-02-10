@@ -5,7 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Stage } from '../stages/stage.entity';
+import { Document } from '../documents/document.entity';
 
 @Entity({ name: 'projects' })
 export class Project {
@@ -35,4 +38,18 @@ export class Project {
 
   @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
+
+  @OneToMany(() => Stage, (stage) => stage.project, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  stages: Stage[];
+
+  @OneToMany(() => Document, (document) => document.project, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  documents: Document[];
 }

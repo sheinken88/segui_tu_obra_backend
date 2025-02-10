@@ -41,7 +41,8 @@ export class ProjectsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.projectsService.remove(Number(id));
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
+    await this.projectsService.remove(Number(id));
+    return { message: `Project with ID ${id} deleted successfully` };
   }
 }

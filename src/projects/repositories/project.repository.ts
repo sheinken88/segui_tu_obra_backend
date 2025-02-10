@@ -39,6 +39,15 @@ export class ProjectRepository {
   }
 
   async removeProject(id: number): Promise<void> {
-    await this.repo.delete(id);
+    const project = await this.repo.findOne({
+      where: { id },
+      relations: ['stages', 'documents'],
+    });
+
+    if (!project) {
+      throw new NotFoundException(`Project with ID ${id} not found`);
+    }
+
+    await this.repo.remove(project);
   }
 }

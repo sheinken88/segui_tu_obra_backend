@@ -41,7 +41,8 @@ export class DocumentsController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.documentsService.remove(Number(id));
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
+    await this.documentsService.remove(Number(id));
+    return { message: `Document with ID ${id} deleted successfully` };
   }
 }
