@@ -1,43 +1,31 @@
 // src/documents/documents.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { Document } from './document.entity';
+import { DocumentRepository } from './repositories/document.repository';
+import { CreateDocumentDto } from './dto/create-document.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
 
 @Injectable()
 export class DocumentsService {
-  constructor(
-    @InjectRepository(Document)
-    private documentsRepository: Repository<Document>,
-  ) {}
+  constructor(private readonly documentRepository: DocumentRepository) {}
 
-  async create(documentData: Partial<Document>): Promise<Document> {
-    const document = this.documentsRepository.create(documentData);
-    return this.documentsRepository.save(document);
+  create(createDocumentDto: CreateDocumentDto): Promise<Document> {
+    return this.documentRepository.createDocument(createDocumentDto);
   }
 
-  async findAll(): Promise<Document[]> {
-    return this.documentsRepository.find();
+  findAll(): Promise<Document[]> {
+    return this.documentRepository.findAllDocuments();
   }
 
-  async findOne(id: number): Promise<Document> {
-    const document = await this.documentsRepository.findOne({ where: { id } });
-    if (!document) {
-      throw new NotFoundException(`Document with ID ${id} not found`);
-    }
-    return document;
+  findOne(id: number): Promise<Document> {
+    return this.documentRepository.findDocumentById(id);
   }
 
-  async update(id: number, updateData: Partial<Document>): Promise<Document> {
-    await this.documentsRepository.update(id, updateData);
-    const updated = await this.findOne(id);
-    if (!updated) {
-      throw new NotFoundException(`Document with ID ${id} not found`);
-    }
-    return updated;
+  update(id: number, updateDocumentDto: UpdateDocumentDto): Promise<Document> {
+    return this.documentRepository.updateDocument(id, updateDocumentDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.documentsRepository.delete(id);
+  remove(id: number): Promise<void> {
+    return this.documentRepository.removeDocument(id);
   }
 }

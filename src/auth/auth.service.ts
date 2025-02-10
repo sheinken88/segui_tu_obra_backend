@@ -15,10 +15,9 @@ interface JwtPayload {
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private usersService: UsersService, // Inject UsersService
+    private usersService: UsersService,
   ) {}
 
-  // Validate user credentials using the UsersService
   async validateUser(
     email: string,
     pass: string,
@@ -27,11 +26,9 @@ export class AuthService {
     if (!user) {
       return null;
     }
-    // Compare password with stored hash using bcrypt
     const passwordMatches = await bcrypt.compare(pass, user.password_hash);
     if (passwordMatches) {
-      // Exclude password_hash from the result
-      const { password_hash: _password_hash, ...result } = user;
+      const { password_hash, ...result } = user;
       return result;
     }
     return null;
@@ -43,7 +40,6 @@ export class AuthService {
       sub: user.id,
       role: user.role,
     };
-
     return {
       access_token: await this.jwtService.signAsync(payload),
     };

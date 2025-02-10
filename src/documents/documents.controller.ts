@@ -10,14 +10,16 @@ import {
 } from '@nestjs/common';
 import { DocumentsService } from './documents.service';
 import { Document } from './document.entity';
+import { CreateDocumentDto } from './dto/create-document.dto';
+import { UpdateDocumentDto } from './dto/update-document.dto';
 
 @Controller('documents')
 export class DocumentsController {
   constructor(private readonly documentsService: DocumentsService) {}
 
   @Post()
-  create(@Body() documentData: Partial<Document>): Promise<Document> {
-    return this.documentsService.create(documentData);
+  create(@Body() createDocumentDto: CreateDocumentDto): Promise<Document> {
+    return this.documentsService.create(createDocumentDto);
   }
 
   @Get()
@@ -33,9 +35,9 @@ export class DocumentsController {
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updateData: Partial<Document>,
+    @Body() updateDocumentDto: UpdateDocumentDto,
   ): Promise<Document> {
-    return this.documentsService.update(Number(id), updateData);
+    return this.documentsService.update(Number(id), updateDocumentDto);
   }
 
   @Delete(':id')

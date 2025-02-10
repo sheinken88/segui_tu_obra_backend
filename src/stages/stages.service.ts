@@ -1,43 +1,35 @@
 // src/stages/stages.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { Stage } from './stage.entity';
+import { StageRepository } from './repositories/stage.repository';
+import { CreateStageDto } from './dto/create-stage.dto';
+import { UpdateStageDto } from './dto/update-stage.dto';
 
 @Injectable()
 export class StagesService {
-  constructor(
-    @InjectRepository(Stage)
-    private stagesRepository: Repository<Stage>,
-  ) {}
+  constructor(private readonly stageRepository: StageRepository) {}
 
-  async create(stageData: Partial<Stage>): Promise<Stage> {
-    const stage = this.stagesRepository.create(stageData);
-    return this.stagesRepository.save(stage);
+  create(createStageDto: CreateStageDto): Promise<Stage> {
+    return this.stageRepository.createStage(createStageDto);
   }
 
-  async findAll(): Promise<Stage[]> {
-    return this.stagesRepository.find();
+  findAll(): Promise<Stage[]> {
+    return this.stageRepository.findAllStages();
   }
 
-  async findByProject(projectId: number): Promise<Stage[]> {
-    return this.stagesRepository.find({ where: { project_id: projectId } });
+  findOne(id: number): Promise<Stage> {
+    return this.stageRepository.findStageById(id);
   }
 
-  async findOne(id: number): Promise<Stage | null> {
-    return this.stagesRepository.findOne({ where: { id } });
+  findByProject(projectId: number): Promise<Stage[]> {
+    return this.stageRepository.findStagesByProject(projectId);
   }
 
-  async update(id: number, updateData: Partial<Stage>): Promise<Stage> {
-    await this.stagesRepository.update(id, updateData);
-    const updated = await this.findOne(id);
-    if (!updated) {
-      throw new NotFoundException(`Stage with ID ${id} not found`);
-    }
-    return updated;
+  update(id: number, updateStageDto: UpdateStageDto): Promise<Stage> {
+    return this.stageRepository.updateStage(id, updateStageDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.stagesRepository.delete(id);
+  remove(id: number): Promise<void> {
+    return this.stageRepository.removeStage(id);
   }
 }

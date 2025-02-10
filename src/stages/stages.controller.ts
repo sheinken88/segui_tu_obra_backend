@@ -7,18 +7,19 @@ import {
   Param,
   Put,
   Delete,
-  NotFoundException,
 } from '@nestjs/common';
 import { StagesService } from './stages.service';
 import { Stage } from './stage.entity';
+import { CreateStageDto } from './dto/create-stage.dto';
+import { UpdateStageDto } from './dto/update-stage.dto';
 
 @Controller('stages')
 export class StagesController {
   constructor(private readonly stagesService: StagesService) {}
 
   @Post()
-  create(@Body() stageData: Partial<Stage>): Promise<Stage> {
-    return this.stagesService.create(stageData);
+  create(@Body() createStageDto: CreateStageDto): Promise<Stage> {
+    return this.stagesService.create(createStageDto);
   }
 
   @Get()
@@ -26,27 +27,22 @@ export class StagesController {
     return this.stagesService.findAll();
   }
 
-  // Endpoint to get stages by project id
   @Get('project/:projectId')
   findByProject(@Param('projectId') projectId: string): Promise<Stage[]> {
     return this.stagesService.findByProject(Number(projectId));
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Stage> {
-    const stage = await this.stagesService.findOne(Number(id));
-    if (!stage) {
-      throw new NotFoundException(`Stage with ID ${id} not found`);
-    }
-    return stage;
+  findOne(@Param('id') id: string): Promise<Stage> {
+    return this.stagesService.findOne(Number(id));
   }
 
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updateData: Partial<Stage>,
+    @Body() updateStageDto: UpdateStageDto,
   ): Promise<Stage> {
-    return this.stagesService.update(Number(id), updateData);
+    return this.stagesService.update(Number(id), updateStageDto);
   }
 
   @Delete(':id')

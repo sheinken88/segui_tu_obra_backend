@@ -16,7 +16,7 @@ export class Project {
   tenant_id: number;
 
   @Column()
-  owner_id: number; // Foreign key to users table
+  owner_id: number;
 
   @Column({ length: 255 })
   name: string;

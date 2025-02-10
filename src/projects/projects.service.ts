@@ -1,39 +1,31 @@
 // src/projects/projects.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { Project } from './project.entity';
+import { ProjectRepository } from './repositories/project.repository';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Injectable()
 export class ProjectsService {
-  constructor(
-    @InjectRepository(Project)
-    private projectsRepository: Repository<Project>,
-  ) {}
+  constructor(private readonly projectRepository: ProjectRepository) {}
 
-  async create(projectData: Partial<Project>): Promise<Project> {
-    const project = this.projectsRepository.create(projectData);
-    return this.projectsRepository.save(project);
+  create(createProjectDto: CreateProjectDto): Promise<Project> {
+    return this.projectRepository.createProject(createProjectDto);
   }
 
-  async findAll(): Promise<Project[]> {
-    return this.projectsRepository.find();
+  findAll(): Promise<Project[]> {
+    return this.projectRepository.findAllProjects();
   }
 
-  async findOne(id: number): Promise<Project | null> {
-    return this.projectsRepository.findOne({ where: { id } });
+  findOne(id: number): Promise<Project> {
+    return this.projectRepository.findProjectById(id);
   }
 
-  async update(id: number, updateData: Partial<Project>): Promise<Project> {
-    await this.projectsRepository.update(id, updateData);
-    const updated = await this.findOne(id);
-    if (!updated) {
-      throw new NotFoundException(`Project with ID ${id} not found`);
-    }
-    return updated;
+  update(id: number, updateProjectDto: UpdateProjectDto): Promise<Project> {
+    return this.projectRepository.updateProject(id, updateProjectDto);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.projectsRepository.delete(id);
+  remove(id: number): Promise<void> {
+    return this.projectRepository.removeProject(id);
   }
 }

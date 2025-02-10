@@ -19,7 +19,7 @@ export class User {
   id: number;
 
   @Column()
-  tenant_id: number; // In a multi-tenant system, this ties the user to a tenant
+  tenant_id: number;
 
   @Column({ length: 255 })
   name: string;
@@ -28,10 +28,10 @@ export class User {
   email: string;
 
   @Column({ type: 'varchar', length: 50 })
-  role: UserRole; // 'homeowner', 'contractor', 'super_admin'
+  role: UserRole;
 
   @Column({ name: 'password_hash' })
-  password_hash: string; // Store the hashed password
+  password_hash: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;

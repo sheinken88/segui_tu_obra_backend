@@ -11,16 +11,17 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(context: ExecutionContext) {
-    // Check if the route is marked as public
+    const request = context.switchToHttp().getRequest();
+    console.log('Auth Header:', request.headers.authorization);
+
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
+
     if (isPublic) {
-      // Allow access without authentication
       return true;
     }
-    // Otherwise, use the default behavior (validate the JWT)
     return super.canActivate(context);
   }
 }

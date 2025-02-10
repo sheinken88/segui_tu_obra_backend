@@ -7,18 +7,19 @@ import {
   Param,
   Put,
   Delete,
-  NotFoundException,
 } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { Project } from './project.entity';
+import { CreateProjectDto } from './dto/create-project.dto';
+import { UpdateProjectDto } from './dto/update-project.dto';
 
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
   @Post()
-  create(@Body() projectData: Partial<Project>): Promise<Project> {
-    return this.projectsService.create(projectData);
+  create(@Body() createProjectDto: CreateProjectDto): Promise<Project> {
+    return this.projectsService.create(createProjectDto);
   }
 
   @Get()
@@ -27,20 +28,16 @@ export class ProjectsController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string): Promise<Project> {
-    const project = await this.projectsService.findOne(Number(id));
-    if (!project) {
-      throw new NotFoundException(`Project with ID ${id} not found`);
-    }
-    return project;
+  findOne(@Param('id') id: string): Promise<Project> {
+    return this.projectsService.findOne(Number(id));
   }
 
   @Put(':id')
   update(
     @Param('id') id: string,
-    @Body() updateData: Partial<Project>,
+    @Body() updateProjectDto: UpdateProjectDto,
   ): Promise<Project> {
-    return this.projectsService.update(Number(id), updateData);
+    return this.projectsService.update(Number(id), updateProjectDto);
   }
 
   @Delete(':id')

@@ -13,7 +13,7 @@ export class Stage {
   id: number;
 
   @Column()
-  project_id: number; // Foreign key to projects table
+  project_id: number;
 
   @Column({ length: 255 })
   name: string;

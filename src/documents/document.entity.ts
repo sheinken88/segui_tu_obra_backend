@@ -13,10 +13,10 @@ export class Document {
   id: number;
 
   @Column()
-  project_id: number; // Foreign key to projects table
+  project_id: number;
 
   @Column({ nullable: true })
-  stage_id: number; // Foreign key to stages table (nullable)
+  stage_id: number;
 
   @Column({ length: 255 })
   title: string;
@@ -25,13 +25,13 @@ export class Document {
   file_url: string;
 
   @Column({ length: 100 })
-  document_type: string; // e.g., "blueprint", "diseño", "contrato"
+  document_type: string;
 
   @Column('text')
   description: string;
 
   @Column()
-  uploaded_by: number; // Foreign key to users table
+  uploaded_by: number;
 
   @Column({ type: 'timestamp' })
   uploaded_at: Date;
