@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProjectsModule } from './projects/projects.module';
 import { StagesModule } from './stages/stages.module';
 import { DocumentsModule } from './documents/documents.module';
+import { ExpensesModule } from './expenses/expenses.module';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { DocumentsModule } from './documents/documents.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true, // set to false in production
+      synchronize: true, // Remember: set to false in production
       logging: true,
     }),
     UsersModule,
@@ -29,6 +30,7 @@ import { DocumentsModule } from './documents/documents.module';
     ProjectsModule,
     StagesModule,
     DocumentsModule,
+    ExpensesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
