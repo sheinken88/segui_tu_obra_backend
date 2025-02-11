@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Stage } from '../stages/stage.entity';
 import { Document } from '../documents/document.entity';
+import { TakeoffItem } from '../quantity-takeoff/takeoff-item.entity';
 
 @Entity({ name: 'projects' })
 export class Project {
@@ -52,4 +53,11 @@ export class Project {
     eager: true,
   })
   documents: Document[];
+
+  @OneToMany(() => TakeoffItem, (takeoffItem) => takeoffItem.project, {
+    cascade: true,
+    onDelete: 'CASCADE',
+    eager: true,
+  })
+  takeoffItems: TakeoffItem[];
 }
