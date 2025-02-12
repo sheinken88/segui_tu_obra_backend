@@ -16,7 +16,7 @@ export class TakeoffItemAssignment {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => TakeoffItem, (takeoffItem) => takeoffItem.assignments, {
+  @ManyToOne(() => TakeoffItem, (item) => item.assignments, {
     onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'takeoff_item_id' })

@@ -17,7 +17,7 @@ export class TakeoffItem {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // Each takeoff item is associated with a project.
+  // Link the item to a project.
   @ManyToOne(() => Project, (project) => project.takeoffItems, {
     onDelete: 'CASCADE',
   })
@@ -30,14 +30,12 @@ export class TakeoffItem {
   @Column({ length: 255 })
   item_name: string;
 
-  @Column({ length: 255, nullable: true })
-  area?: string; // Optional classification
-
-  @Column({ length: 255, nullable: true })
-  category?: string; // Optional classification
+  // Removed area as per new requirements.
+  @Column({ length: 255 })
+  category: string;
 
   @Column('numeric')
-  quantity: number; // Total quantity available
+  quantity: number; // The total quantity needed for the item
 
   @Column({ length: 50 })
   unit: string;
@@ -45,6 +43,7 @@ export class TakeoffItem {
   @Column('numeric')
   estimated_cost: number;
 
+  // A takeoff item may have multiple assignments (one for each stage where it's used).
   @OneToMany(
     () => TakeoffItemAssignment,
     (assignment) => assignment.takeoffItem,

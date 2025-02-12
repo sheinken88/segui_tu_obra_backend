@@ -20,7 +20,7 @@ import { UpdateTakeoffItemAssignmentDto } from './dto/update-takeoff-item-assign
 export class QuantityTakeoffController {
   constructor(private readonly takeoffService: QuantityTakeoffService) {}
 
-  // Endpoints for Takeoff Items
+  // Integrated endpoint to create an item (with optional assignments)
   @Post('items')
   createItem(@Body() createDto: CreateTakeoffItemDto): Promise<TakeoffItem> {
     return this.takeoffService.createItem(createDto);
@@ -49,7 +49,7 @@ export class QuantityTakeoffController {
     return this.takeoffService.removeItem(Number(id));
   }
 
-  // Endpoints for Takeoff Item Assignments
+  // Optional endpoints for assignments (if needed separately)
   @Post('assignments')
   createAssignment(
     @Body() createDto: CreateTakeoffItemAssignmentDto,

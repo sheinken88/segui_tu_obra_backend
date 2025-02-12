@@ -54,10 +54,9 @@ export class Project {
   })
   documents: Document[];
 
-  @OneToMany(() => TakeoffItem, (takeoffItem) => takeoffItem.project, {
+  @OneToMany(() => TakeoffItem, (item) => item.project, {
     cascade: true,
     onDelete: 'CASCADE',
-    eager: true,
   })
   takeoffItems: TakeoffItem[];
 }
