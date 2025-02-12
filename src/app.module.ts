@@ -11,6 +11,7 @@ import { StagesModule } from './stages/stages.module';
 import { DocumentsModule } from './documents/documents.module';
 import { ExpensesModule } from './expenses/expenses.module';
 import { QuantityTakeoffModule } from './quantity-takeoff/quantity-takeoff.module';
+import { SuppliersModule } from './suppliers/suppliers.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { QuantityTakeoffModule } from './quantity-takeoff/quantity-takeoff.modul
     DocumentsModule,
     ExpensesModule,
     QuantityTakeoffModule,
+    SuppliersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
